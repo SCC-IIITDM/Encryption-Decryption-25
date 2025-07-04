@@ -94,6 +94,11 @@ Each buffer must:
 
 This structure is known as a **pipelined system**: data flows through in steps, and each step operates independently. This makes the system faster and modular, but you must be careful with timing.
 
+
+Architectural diagram:
+
+![Pipeline Diagram](arch.png)
+
 ---
 
 ## ⚖️ Detailed Stage Descriptions (with Hints)
