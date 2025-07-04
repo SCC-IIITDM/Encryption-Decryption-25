@@ -46,7 +46,7 @@ You must write all three stages yourself. The only information you have is:
 
 ---
 
-##Verilator GTK wave installation
+## Verilator GTK wave installation
 
 check out this link ! : https://github.com/SCC-IIITDM/tools
 
