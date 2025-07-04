@@ -3,104 +3,251 @@
 
 #  The Key-Controlled Bitstream Puzzle
 
-Welcome to **CRYPTOVERIL++**, a hardware puzzle where you're given two things:  
-- a stream of **16 bits of input data**,  
-- and a **short key** that tells a hidden machine how to change that data.
+This isn’t your average Verilog assignment. You’ll be designing a complete system from scratch that takes a bitstream and a control key, pushes it through a custom-built multi-stage logic system, and outputs a transformed version. You’ll also need to reason about clock domains, buffers, and how data moves over time — just like in real-world hardware systems.
 
-Your challenge is to figure out how the system transforms the input using the key, and then implement this system using **Verilog**, **Verilator**, and **GTKWave**.
+🔹 What is This Challenge About?
 
----
+You are given two things:
 
-## 🎯 What You Need to Do
+A 16-bit input called input_data
 
-You’ll build a digital circuit with **three processing stages**.  
-Each stage changes the input a little more, based on parts of the key.  
-Your goal is to:
-- Build the stages
-- Get the output to match expected patterns
-- Use GTKWave to check if it’s working
+A compact control key called key_bits
 
----
+These two values are fed into a three-stage hardware system. The input gets processed in three steps, with each stage performing a transformation based on specific bits from the key. Your task is to build this system, one stage at a time, while understanding how the control logic and data transformation interact.
 
-## 💡 Key Terms (But Easy)
+You will:
 
-- `input`: The original 16-bit data stream
-- `key`: A short control value (less than 10 bits) that tells each stage what to do
-- `stage`: A step in the process where the data is modified
-- `pipelining`: A way to let each stage work at its own speed without waiting
+Design each stage as a separate module
 
----
+Use a different clock for each stage (each slower than the previous one)
 
-## 🏗️ How Pipelining Works Here
+Add buffering between the stages
 
-Each of the three stages runs at a different clock speed:
+Use Verilator and GTKWave to simulate and observe the signals
 
-- Stage 1 is the **fastest**
-- Stage 2 is **slower** (1/3 the speed)
-- Stage 3 is the **slowest** (1/3 of Stage 2)
+Verify that your design works by matching outputs
 
-To keep things moving smoothly:
-- Each stage has a **buffer** — like a waiting room — so slower stages don’t block faster ones
-- These buffers store data temporarily until the next stage is ready
+🔎 What's the Goal?
 
-This is called **pipelining**. It’s like a factory where each worker (stage) works at their own pace, and parts are passed through using boxes (buffers) between them.
+Create a Verilog-based hardware pipeline that:
 
----
+Takes in a 16-bit input
 
-## 🧠 How It Works (Without Giving Away the Secret)
+Uses a key to control how that input is transformed
 
-There are three stages. Each one reads part of the key and processes the input based on that.
+Passes the data through three different stages
 
-### 🔹 Stage 1 – Bit Movement
-This stage moves bits around and does something else with the number of bits moved.  
-💡 *Hint: Count how many bits are moved. That number matters.*
+Outputs the transformed data after the final stage
 
-### 🔹 Stage 2 – Logic Machine (FSM)
-This part has a small control system that switches between 4 different "modes" depending on the key. Each mode transforms the data in a different way.  
-💡 *Hint: Some modes care about how many 1s and 0s are in the input.*
+Can be verified through waveform analysis
 
-### 🔹 Stage 3 – Final Fix
-This stage cleans up the data depending on what Stage 2 did. It removes or corrects something added earlier.  
-💡 *Hint: The cleanup depends on the mode used in the previous stage.*
+You must write all three stages yourself. The only information you have is:
 
----
+The format of the key
 
-## 🧪 How to Test It
+The architectural rules
 
-1. Run your code using **Verilator**  
-2. View the results in **GTKWave**  
-3. Make sure each stage transforms the data correctly  
-4. Check that the final output matches what you expect
+A hint about what each stage does (but not exact logic)
 
-Bonus: Try building a **reverse version** that takes the final output and turns it back into the original input.
+🌐 System Overview
 
----
+This system consists of three major logic stages:
 
-## 🧰 Tools Needed
+Stage 1: Bit Manipulation Stage
 
-- WSL/VirtualBox Ubuntu 22.04 LTS or lesser
-- Verilator (for running your Verilog code)
-- GTKWave (to see what’s happening inside your circuit)
+Operates on the fastest clock
 
----
+Reads the first 3 bits of the key
 
-## 📝 What to Submit
+Transforms the input using bit shifts and arithmetic
 
-- Your Verilog code (all 3 stages)
-- Screenshots from GTKWave showing your output works
-- .vcd dump from your Verilator dump.
-- Your reverse/decryption design
+Stage 2: Finite State Machine (FSM) Stage
 
----
+Operates on a clock that is 1/3rd the speed of Stage 1
+
+Reads the next 2 bits of the key
+
+Uses a 4-state FSM to determine how to further transform the data
+
+Stage 3: Post-Processing Stage
+
+Operates on a clock that is 1/3rd the speed of Stage 2
+
+Depending on the FSM result, it either removes added bits or performs final cleanup
+
+⏱ Clocking Architecture
+
+Each stage runs at a different clock rate:
+
+Stage 1: clk1 (fastest)
+
+Stage 2: clk2 = clk1 / 3
+
+Stage 3: clk3 = clk2 / 3
+
+This simulates real-world multi-clock domain systems. Data flows between stages asynchronously, meaning you’ll need to synchronize and buffer data properly.
+
+⛽ Pipelining & Buffers
+
+Because each stage runs at a different speed, you can’t just pass data from one to the next without problems. You need buffers between the stages to hold the output of the faster stage until the slower stage is ready.
+
+Each buffer must:
+
+Store the output of the current stage
+
+Wait for a "ready" signal from the next stage
+
+Include valid/ready handshaking or use a FIFO
+
+Prevent data loss or duplication
+
+This structure is known as a pipelined system: data flows through in steps, and each step operates independently. This makes the system faster and modular, but you must be careful with timing.
+
+⚖️ Detailed Stage Descriptions (with Hints)
+
+Stage 1 — Bit Movement & Arithmetic
+
+What you know:
+
+Uses the first 3 bits of the key
+
+These bits define how many positions the input is shifted to the left
+
+After the shift, something is added to the result
+
+Hint:
+
+The number of positions you shift is also related to what you add to the input. Look at how the amount of movement connects to the arithmetic done after.
+
+This stage is mainly combinational logic but may require a register if pipelined.
+
+Stage 2 — FSM-Controlled Logic
+
+What you know:
+
+Uses the next 2 bits of the key
+
+The FSM has 4 different states
+
+Each state applies a different operation to the data
+
+The current state AND key bits determine the next state
+
+Hint:
+
+The FSM chooses between operations like checking parity, bitwise logic (AND/OR), and extending the sign of certain bits. Focus on how the state machine is built, and how transitions happen.
+
+You’ll need to design:
+
+A 2-bit current state register
+
+A next-state logic block
+
+Output logic depending on the current state
+
+Stage 3 — Cleanup Stage
+
+What you know:
+
+Cleans up or reverses actions from the previous stage
+
+Based on the FSM output, it chooses which cleanup action to apply
+
+Hint:
+
+If the FSM added a bit (like for parity), this is where it’s removed. If sign bits were extended, this is where they're dropped. Think of this as the final polish on the data before output.
+
+🔢 Inputs and Outputs
+
+You must design your top-level module with the following ports:
+
+module cryptoveril (
+    input wire clk1,     // Stage 1 clock
+    input wire clk2,     // Stage 2 clock
+    input wire clk3,     // Stage 3 clock
+    input wire rst,      // Global reset
+    input wire [15:0] input_data, // Input data
+    input wire [5:0] key_bits,    // 6-bit key
+    output wire [15:0] output_data // Final result
+);
+
+You can also add internal signals for:
+
+Buffer registers
+
+Handshake signals (valid/ready)
+
+FSM state variables
+
+🔮 What You’ll Learn
+
+By the end of this challenge, you’ll have hands-on experience with:
+
+Bit-level manipulation in Verilog
+
+FSM design and control logic
+
+Building pipelined architectures
+
+Handling multiple clock domains
+
+Debugging waveform outputs in GTKWave
+
+These are essential skills in real digital design and chip development workflows.
+
+📊 How to Test Your Design
+
+Run your Verilog design using Verilator
+
+Create a .vcd file with signal traces
+
+Open the trace in GTKWave
+
+Step through each stage:
+
+Check data entering/leaving each buffer
+
+Verify that the FSM behaves correctly
+
+Confirm that the output matches expectations
+
+Example test cases and a testbench will be provided.
+
+📥 What to Submit
+
+At the end of the hackathon, submit:
+
+Your Verilog code (all modules and top-level)
+
+A testbench that exercises at least 3 different key-input pairs
+
+A .gtkw config file or screenshots showing signal flow
+
+(Optional) A document explaining your FSM design and pipeline choices
+
+⭐ Bonus Points
+
+Add a reverse module that undoes all three stages and restores the original input
+
+Use parameterized buffer sizes for clock frequency flexibility
+
+Implement a visual trace of your FSM transitions
+
+🏋️ Summary Checklist
 
 
-## 📌 Remember
 
-Everything is open — no hidden modules, no secret files.  
-But **how it works is for you to figure out**.  
-Think logically, simulate carefully, and explore with GTKWave.
+🌟 Final Words
 
-Good luck! 🔧💡
+This project is about designing, not just coding. It challenges you to think like a hardware engineer: moving bits, managing timing, and debugging waveforms. The logic is open-ended. You control the architecture, the flow, and the solution.
+
+Everything is open-source. But the logic?
+
+That’s yours to discover.
+
+Good luck, and happy hacking! 🚀
+
+
 
 
 
