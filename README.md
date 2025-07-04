@@ -1,7 +1,7 @@
-# Encryption-Decryption-25
+# 🔐 Encryption-Decryption-25
 
 
-# 🔐 CRYPTOVERIL++: The Key-Controlled Bitstream Puzzle
+#  The Key-Controlled Bitstream Puzzle
 
 Welcome to **CRYPTOVERIL++**, a hardware puzzle where you're given two things:  
 - a stream of **16 bits of input data**,  
