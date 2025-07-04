@@ -3,8 +3,6 @@
 
 #  The Key-Controlled Bitstream Puzzle
 
-# CRYPTOVERIL++: The Key-Controlled Bitstream Puzzle
-
 Welcome to **CRYPTOVERIL++**, a hands-on digital hardware challenge where you won’t just write code — you’ll need to trace signals, analyze waveforms, and uncover how a stream of data is transformed through a mysterious pipeline.
 
 This isn’t your average Verilog assignment. You’ll be designing a complete system from scratch that takes a bitstream and a control key, pushes it through a custom-built multi-stage logic system, and outputs a transformed version. You’ll also need to reason about clock domains, buffers, and how data moves over time — just like in real-world hardware systems.
