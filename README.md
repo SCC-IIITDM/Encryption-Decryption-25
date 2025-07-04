@@ -97,7 +97,7 @@ This structure is known as a **pipelined system**: data flows through in steps, 
 
 Architectural diagram:
 
-![Pipeline Diagram](arch.png)
+![Pipeline Diagram](arch)
 
 ---
 
