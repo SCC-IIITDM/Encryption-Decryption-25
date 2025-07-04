@@ -46,6 +46,11 @@ You must write all three stages yourself. The only information you have is:
 
 ---
 
+##Verilator GTK wave installation
+
+check out this link ! : https://github.com/SCC-IIITDM/tools
+
+---
 ## 🌐 System Overview
 
 This system consists of three major logic stages:
