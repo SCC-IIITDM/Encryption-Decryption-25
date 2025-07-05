@@ -133,7 +133,7 @@ This stage is mainly combinational logic but may require a register if pipelined
 * Uses the **next 2 bits of the key**
 * The FSM has **4 different states**
 * Each state applies a different operation to the data
-* The current state AND key bits determine the **next state**
+* The current state and key bits determine the **next state**
 
 **Hint:**
 
@@ -177,7 +177,7 @@ module cryptoveril (
 You can also add internal signals for:
 
 * Buffer registers
-* Handshake signals (valid/ready)
+* Hshake signals (valid/ready)
 * FSM state variables
 
 ---
