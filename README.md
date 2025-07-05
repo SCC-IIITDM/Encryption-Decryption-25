@@ -119,27 +119,23 @@ Architectural diagram:
 **What you know:**
 
 * Uses the **first 3 bits of the key**
-* These bits define how many positions the input is **shifted to the left**
-* After the shift, something is **added** to the result
-
-**Hint:**
-
-> The number of positions you shift is also related to what you add to the input. Look at how the amount of movement connects to the arithmetic done after.
+* These bits define how many positions the input is **shifted to the left**.
+* After the shift, something is **added** to the result.
 
 This stage is mainly combinational logic but may require a register if pipelined.
 
-### Stage 2 — FSM-Controlled Logic
+### Stage 2 — Decision Tree-Controlled Logic
 
 **What you know:**
 
 * Uses the **next 2 bits of the key**
-* The FSM has **4 different states**
-* Each state applies a different operation to the data
+* The tree has **4 different branches**
+* Each branch applies a different operation to the data
 * The current state and key bits determine the **next state**
 
 **Hint:**
 
-> The FSM chooses between operations like checking parity, bitwise logic (AND/OR), and extending the sign of certain bits. Focus on how the state machine is built, and how transitions happen.
+> The tree chooses between operations like checking parity, bitwise logic (AND/OR), and extending the sign of certain bits. Focus on how the decision tree is built and how transitions happen.
 
 You’ll need to design:
 
@@ -152,13 +148,8 @@ You’ll need to design:
 **What you know:**
 
 * Cleans up or reverses actions from the previous stage
-* Based on the FSM output, it chooses which cleanup action to apply
+* Based on the decision tree's output, it chooses how to include but cleanup the extra bit.
 
-**Hint:**
-
-> If the FSM added a bit (like for parity), this is where it’s removed. If sign bits were extended, this is where they're dropped. Think of this as the final polish on the data before output.
-
----
 
 ## 🔢 Inputs and Outputs
 
@@ -180,7 +171,7 @@ You can also add internal signals for:
 
 * Buffer registers
 * Hshake signals (valid/ready)
-* FSM state variables
+* Decision tree branch variables
 
 ---
 
@@ -189,7 +180,7 @@ You can also add internal signals for:
 By the end of this challenge, you’ll have hands-on experience with:
 
 * Bit-level manipulation in Verilog
-* FSM design and control logic
+* Decision tree design and control logic
 * Building pipelined architectures
 * Handling multiple clock domains
 * Debugging waveform outputs in GTKWave
@@ -206,7 +197,6 @@ These are **essential skills** in real digital design and chip development workf
 4. Step through each stage:
 
    * Check data entering/leaving each buffer
-   * Verify that the FSM behaves correctly
    * Confirm that the output matches expectations
 
 Example test cases and a testbench will be provided.
@@ -226,9 +216,8 @@ At the end of the hackathon, submit:
 
 ## ⭐ Bonus Points
 
-* Add a **reverse module** that undoes all three stages and restores the original input
-* Use parameterized buffer sizes for clock frequency flexibility
-* Implement a visual trace of your FSM transitions
+* Add a **reverse module** that undoes all three stages and restores the original input.
+* Use parameterized buffer sizes for clock frequency flexibility.
 
 ---
 
