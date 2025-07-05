@@ -7,7 +7,7 @@ Welcome to **CRYPTOVERIL++**, a hands-on digital hardware challenge where you wo
 
 This isn’t your average Verilog assignment. You’ll be designing a complete system from scratch that takes a bitstream and a control key, pushes it through a custom-built multi-stage logic system, and outputs a transformed version. You’ll also need to reason about clock domains, buffers, and how data moves over time — just like in real-world hardware systems.
 
-## Announcement !!
+# Announcement !!
 
 Team submisssions can be of sizes two - three members !
 
