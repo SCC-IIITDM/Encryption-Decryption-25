@@ -59,10 +59,12 @@ check out this link ! : https://github.com/SCC-IIITDM/tools
 
 This system consists of three major logic stages:
 
+
+
 ### Stage 1: Bit Manipulation Stage
 
 * Operates on the **fastest clock**
-* Reads the **first 3 bits of the key**
+* Reads the **first 3 bits of the key** (consider from most significant bit)
 * Transforms the input using **bit shifts** and **arithmetic**
 
 ### Stage 2: Finite State Machine (FSM) Stage
