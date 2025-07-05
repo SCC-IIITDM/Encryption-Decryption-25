@@ -67,16 +67,16 @@ This system consists of three major logic stages:
 * Reads the **first 3 bits of the key** (consider from most significant bit)
 * Transforms the input using **bit shifts** and **arithmetic**
 
-### Stage 2: Finite State Machine (FSM) Stage
+### Stage 2: Decision Tree Stage
 
 * Operates on a **clock that is 1/3rd the speed of Stage 1**
-* Reads the **next 2 bits of the key**
-* Uses a **4-state FSM** to determine how to further transform the data
+* Reads the **next 2 bits of the key**.
+* Uses a **4-branch decision tree** to determine how to transform the data further.
 
 ### Stage 3: Post-Processing Stage
 
 * Operates on a **clock that is 1/3rd the speed of Stage 2**
-* Depending on the FSM result, it either removes added bits or performs final cleanup
+* Depending on the decision tree's result, it manipulates the added bits to perform the final cleanup.
 
 ---
 
